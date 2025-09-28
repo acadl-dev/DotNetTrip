@@ -12,9 +12,9 @@ namespace DotNetTrip.Pages.Destino
 {
     public class CreateModel : PageModel
     {
-        private readonly DotNetTrip.Data.ApplicationDbContext _context;
+        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
 
-        public CreateModel(DotNetTrip.Data.ApplicationDbContext context)
+        public CreateModel(DotNetTrip.Data.DotNetTripDbContext context)
         {
             _context = context;
         }

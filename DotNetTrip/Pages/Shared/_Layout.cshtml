@@ -1,51 +1,147 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - DotNetTrip</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/DotNetTrip.styles.css" asp-append-version="true" />
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">DotNetTrip</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-white shadow-lg flex flex-col">
+            <!-- Logo/Header -->
+            <div class="p-6 border-b border-gray-200">
+                <h1 class="text-xl font-bold text-gray-800">DotNet Trip</h1>
+            </div>
+
+            <!-- Menu Items -->
+            <nav class="flex-1 px-4 py-6 space-y-2">
+                <a asp-area="" asp-page="/Index" class="flex items-center px-4 py-3 text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors duration-200">
+                    <i class="fas fa-tachometer-alt w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Tela de Login</span>
+                </a>
+
+                <a asp-area="" asp-page="/Destino/Index" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-map-marker-alt w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Destinos</span>
+                </a>
+
+                <a asp-area="" asp-page="/PacoteTuristico/Index" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-suitcase w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Pacotes Turisticos</span>
+                </a>
+
+                <a asp-area="" asp-page="/Cliente/Index" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-users w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Clientes</span>
+                </a>
+
+                <a asp-area="" asp-page="/Reserva/Index" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-calendar-alt w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Reservas</span>
+                </a>
+
+                <a asp-area="" asp-page="/Utilidades/Notes/ViewNotes" class="flex items-center px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                    <i class="fas fa-chart-bar w-5 h-5 mr-3"></i>
+                    <span class="font-medium">Sistema de Notas</span>
+                </a>
+            </nav>
+
+
+
+            <!-- Bottom Section -->
+            <div class="p-4 border-t border-gray-200">
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+                   
+                   
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">
+                        <button type="submit" class="flex items-center w-full px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                            <i class="fas fa-sign-out-alt w-5 h-5 mr-3"></i>
+                            Logout
+                        </button>
+                        </form>
+                   
+                }
+                else
+                {
+                   
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                    
+                    
+                        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            Login
+                        </a>
+                    
+                }
+                
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Bar (opcional, para usuário logado) -->
+            <div class="bg-white border-b border-gray-200 px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold text-gray-800">@ViewData["Title"]</h2>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+            <!-- Main Content Area -->
+            <main class="flex-1 overflow-y-auto">
+                <div class="p-6">
+                    @RenderBody()
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-white border-t border-gray-200 px-6 py-4">
+                <div class="text-sm text-gray-500">
+                    &copy; 2025 - DotNetTrip - <a asp-area="" asp-page="/Privacy" class="text-blue-600 hover:text-blue-800">Privacy</a>
+                </div>
+            </footer>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - DotNetTrip - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
+    <!-- Mobile Menu Toggle (para responsividade) -->
+    <div class="lg:hidden fixed top-4 left-4 z-50">
+        <button id="mobile-menu-button" class="bg-white p-2 rounded-md shadow-md">
+            <i class="fas fa-bars text-gray-600"></i>
+        </button>
+    </div>
 
+    <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Script para menu mobile -->
+    <script>
+        $(document).ready(function() {
+            $('#mobile-menu-button').click(function() {
+                $('.w-64').toggleClass('hidden');
+            });
+        });
+
+        // Esconder menu em telas pequenas por padrão
+        if (window.innerWidth < 1024) {
+            $('.w-64').addClass('hidden lg:flex');
+        }
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

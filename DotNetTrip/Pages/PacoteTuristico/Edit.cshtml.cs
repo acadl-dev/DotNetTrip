@@ -13,9 +13,9 @@ namespace DotNetTrip.Pages.PacoteTuristico
 {
     public class EditModel : PageModel
     {
-        private readonly DotNetTrip.Data.ApplicationDbContext _context;
+        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
 
-        public EditModel(DotNetTrip.Data.ApplicationDbContext context)
+        public EditModel(DotNetTrip.Data.DotNetTripDbContext context)
         {
             _context = context;
         }

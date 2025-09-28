@@ -1,0 +1,42 @@
+﻿@page "/readnotes"
+@model DotNetTrip.Pages.Utilidades.Anotacoes.visualizar_anotacoesModel
+@{
+    ViewData["Title"] = "Visualizar Notas";
+}
+
+<div class="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800">Notas Salvas</h2>
+    <a asp-page="/Utilidades/Notes/ReadNotes"
+       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Criar Nova Nota
+    </a>
+
+    <div class="mb-6">
+        <h3 class="text-lg font-semibold mb-2">Arquivos disponíveis:</h3>
+        <ul class="space-y-2">
+            @foreach (var file in Model.Files)
+            {
+                <li>
+                    <a asp-page=""
+                       asp-route-fileName="@file"
+                       class="text-blue-600 hover:underline font-medium">
+                        @file
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.SelectedContent))
+    {
+        <div class="p-4 bg-gray-50 border border-gray-200 rounded-md">
+            <h3 class="text-lg font-semibold mb-2">Conteúdo de: @Model.FileName</h3>
+            <pre class="whitespace-pre-wrap text-gray-800">@Model.SelectedContent</pre>
+        </div>
+    }
+    else if (Model.FileName != null)
+    {
+        <p class="text-red-500 font-medium">Arquivo não encontrado!</p>
+    }
+</div>
+

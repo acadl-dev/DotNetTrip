@@ -12,9 +12,9 @@ namespace DotNetTrip.Pages.PacoteTuristico
 {
     public class IndexModel : PageModel
     {
-        private readonly ApplicationDbContext _context;
+        private readonly DotNetTripDbContext _context;
 
-        public IndexModel(ApplicationDbContext context)
+        public IndexModel(DotNetTripDbContext context)
         {
             _context = context;
         }

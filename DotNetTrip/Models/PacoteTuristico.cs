@@ -7,8 +7,8 @@
         public DateTime DataInicio { get; set; }
         public int CapacidadeMaxima { get; set; }
         public decimal Preco { get; set; }
-        public List<Destino> Destinos { get; set; }
+        public List<Destino>? Destinos { get; set; }
 
-        public List<Reserva> Reservas { get; set; }
+        public List<Reserva>? Reservas { get; set; }
     }
 }

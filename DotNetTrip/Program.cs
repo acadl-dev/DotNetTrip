@@ -7,13 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container. -> Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<DotNetTripDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Identity
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<DotNetTripDbContext>();
 builder.Services.AddRazorPages();
 
 // Todas as páginas devem ser autenticadas
@@ -43,8 +43,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); // Antes de UseAuthorization();
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+app.MapGet("/", context => {
+    context.Response.Redirect("/Identity/Account/Login");
+    return Task.CompletedTask;
+});
 
 app.Run();

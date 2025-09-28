@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DotNetTrip.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(DotNetTripDbContext))]
     [Migration("20250928164655_FirstMigration")]
     partial class FirstMigration
     {

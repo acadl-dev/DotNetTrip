@@ -103,7 +103,8 @@ namespace DotNetTrip.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            // Mudança importante
+            returnUrl ??= Url.Content("~/PacoteTuristico");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 

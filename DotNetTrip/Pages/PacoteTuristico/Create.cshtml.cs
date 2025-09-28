@@ -12,9 +12,9 @@ namespace DotNetTrip.Pages.PacoteTuristico
 {
     public class CreateModel : PageModel
     {
-        private readonly DotNetTrip.Data.ApplicationDbContext _context;
+        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
 
-        public CreateModel(DotNetTrip.Data.ApplicationDbContext context)
+        public CreateModel(DotNetTrip.Data.DotNetTripDbContext context)
         {
             _context = context;
         }
@@ -25,13 +25,18 @@ namespace DotNetTrip.Pages.PacoteTuristico
         }
 
         [BindProperty]
-        public DotNetTrip.Models.PacoteTuristico PacoteTuristico { get; set; } = default!;
+        public Models.PacoteTuristico PacoteTuristico { get; set; } = default!;
 
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                var erros = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var erro in erros)
+                {
+                    Console.WriteLine(erro.ErrorMessage); 
+                }
                 return Page();
             }
 

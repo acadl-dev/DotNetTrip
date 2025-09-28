@@ -12,9 +12,9 @@ namespace DotNetTrip.Pages.Reserva
 {
     public class DeleteModel : PageModel
     {
-        private readonly DotNetTrip.Data.ApplicationDbContext _context;
+        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
 
-        public DeleteModel(DotNetTrip.Data.ApplicationDbContext context)
+        public DeleteModel(DotNetTrip.Data.DotNetTripDbContext context)
         {
             _context = context;
         }

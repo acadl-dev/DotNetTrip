@@ -12,9 +12,9 @@ namespace DotNetTrip.Pages.Reserva
 {
     public class IndexModel : PageModel
     {
-        private readonly DotNetTrip.Data.ApplicationDbContext _context;
+        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
 
-        public IndexModel(DotNetTrip.Data.ApplicationDbContext context)
+        public IndexModel(DotNetTrip.Data.DotNetTripDbContext context)
         {
             _context = context;
         }

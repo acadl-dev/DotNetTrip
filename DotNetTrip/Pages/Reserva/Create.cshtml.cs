@@ -12,17 +12,33 @@ namespace DotNetTrip.Pages.Reserva
 {
     public class CreateModel : PageModel
     {
-        private readonly DotNetTrip.Data.ApplicationDbContext _context;
+        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
 
-        public CreateModel(DotNetTrip.Data.ApplicationDbContext context)
+        public CreateModel(DotNetTrip.Data.DotNetTripDbContext context)
         {
             _context = context;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["ClienteId"] = new SelectList(_context.Clientes, "Id", "Id");
-        ViewData["PacoteTuristicoId"] = new SelectList(_context.PacoteTuristico, "Id", "Id");
+            ViewData["ClienteId"] = new SelectList(
+            _context.Clientes.Select(c => new {
+                Id = c.Id,
+                Display = $"{c.Id} - {c.Nome}"
+            }),
+            "Id",
+            "Display"
+        );
+
+            ViewData["PacoteTuristicoId"] = new SelectList(
+                _context.PacoteTuristico.Select(p => new {
+                    Id = p.Id,
+                    Display = $"{p.Id} - {p.Titulo}"
+                }),
+                "Id",
+                "Display"
+            );
+
             return Page();
         }
 
@@ -34,6 +50,11 @@ namespace DotNetTrip.Pages.Reserva
         {
             if (!ModelState.IsValid)
             {
+                var erros = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var erro in erros)
+                {
+                    Console.WriteLine(erro.ErrorMessage);
+                }
                 return Page();
             }
 

@@ -12,9 +12,9 @@ namespace DotNetTrip.Pages.Reserva
 {
     public class DetailsModel : PageModel
     {
-        private readonly DotNetTrip.Data.ApplicationDbContext _context;
+        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
 
-        public DetailsModel(DotNetTrip.Data.ApplicationDbContext context)
+        public DetailsModel(DotNetTrip.Data.DotNetTripDbContext context)
         {
             _context = context;
         }
