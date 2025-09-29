@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DotNetTrip.Data;
 using DotNetTrip.Models;
+using DotNetTrip.Utils;
 
 namespace DotNetTrip.Pages.Destino
 {
@@ -36,7 +37,12 @@ namespace DotNetTrip.Pages.Destino
             }
 
             _context.Destino.Add(Destino);
+
             await _context.SaveChangesAsync();
+
+            // Montando a mensagem com dados reais da reserva
+            string mensagem = $"[{DateTime.Now:dd/MM/yyyy HH:mm:ss}] - Novo destino criado com sucesso: Id={Destino.Id}, Cidade={Destino.Cidade}, Pais={Destino.Pais}";
+            WatchDog.LogActions?.Invoke(mensagem);
 
             return RedirectToPage("./Index");
         }

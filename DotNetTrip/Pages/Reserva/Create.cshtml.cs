@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DotNetTrip.Data;
+using DotNetTrip.Models;
+using DotNetTrip.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using DotNetTrip.Data;
-using DotNetTrip.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DotNetTrip.Pages.Reserva
 {
@@ -60,6 +61,11 @@ namespace DotNetTrip.Pages.Reserva
 
             _context.Reserva.Add(Reserva);
             await _context.SaveChangesAsync();
+
+
+            // Montando a mensagem com dados reais da reserva
+            string mensagem = $"[{DateTime.Now:dd/MM/yyyy HH:mm:ss}] - Novo pacote criado com sucesso: Id={Reserva.Id}, ClienteId={Reserva.ClienteId}, PacoteTuristicoId={Reserva.PacoteTuristicoId}";
+            WatchDog.LogActions?.Invoke(mensagem);
 
             return RedirectToPage("./Index");
         }
