@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DotNetTrip.Migrations
 {
     /// <inheritdoc />
-    public partial class RenovanndoaMigration : Migration
+    public partial class MigrationFirst : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -57,11 +57,33 @@ namespace DotNetTrip.Migrations
                     id_cliente = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Telefone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Cpf = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    DataNascimento = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Endereco = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Cep = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Cidade = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Estado = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    DataCadastro = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clientes", x => x.id_cliente);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Destino",
+                columns: table => new
+                {
+                    id_destino = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Cidade = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Pais = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Destino", x => x.id_destino);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,23 +209,27 @@ namespace DotNetTrip.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Destino",
+                name: "PacoteTuristicoDestino",
                 columns: table => new
                 {
-                    id_destino = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Cidade = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Pais = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PacoteTuristicoId = table.Column<int>(type: "int", nullable: true)
+                    DestinoId = table.Column<int>(type: "int", nullable: false),
+                    PacoteTuristicoId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Destino", x => x.id_destino);
+                    table.PrimaryKey("PK_PacoteTuristicoDestino", x => new { x.DestinoId, x.PacoteTuristicoId });
                     table.ForeignKey(
-                        name: "FK_Destino_PacoteTuristico_PacoteTuristicoId",
+                        name: "FK_PacoteTuristicoDestino_Destino_DestinoId",
+                        column: x => x.DestinoId,
+                        principalTable: "Destino",
+                        principalColumn: "id_destino",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PacoteTuristicoDestino_PacoteTuristico_PacoteTuristicoId",
                         column: x => x.PacoteTuristicoId,
                         principalTable: "PacoteTuristico",
-                        principalColumn: "id_pacote");
+                        principalColumn: "id_pacote",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -214,7 +240,8 @@ namespace DotNetTrip.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClienteId = table.Column<int>(type: "int", nullable: false),
                     PacoteTuristicoId = table.Column<int>(type: "int", nullable: false),
-                    DataReserva = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    DataReserva = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Observacoes = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -273,8 +300,8 @@ namespace DotNetTrip.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Destino_PacoteTuristicoId",
-                table: "Destino",
+                name: "IX_PacoteTuristicoDestino_PacoteTuristicoId",
+                table: "PacoteTuristicoDestino",
                 column: "PacoteTuristicoId");
 
             migrationBuilder.CreateIndex(
@@ -307,7 +334,7 @@ namespace DotNetTrip.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Destino");
+                name: "PacoteTuristicoDestino");
 
             migrationBuilder.DropTable(
                 name: "Reserva");
@@ -317,6 +344,9 @@ namespace DotNetTrip.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Destino");
 
             migrationBuilder.DropTable(
                 name: "Clientes");

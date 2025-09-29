@@ -1,4 +1,6 @@
-﻿namespace DotNetTrip.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DotNetTrip.Models
 {
     public class Reserva
     {
@@ -8,6 +10,10 @@
         public int PacoteTuristicoId { get; set; }
         public PacoteTuristico? PacoteTuristico { get; set; }
         public DateTime DataReserva { get; set; }
+
+        [Required(ErrorMessage = "As observações são obrigatórias.")]
+        [MinLength(10, ErrorMessage = "As observações devem ter pelo menos 10 caracteres.")]
+        public string Observacoes { get; set; } = string.Empty;
 
 
         // Delegate para o evento de capacidade atingida

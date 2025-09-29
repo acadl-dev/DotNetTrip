@@ -1,38 +1,216 @@
 ﻿@page
 @model DotNetTrip.Pages.Cliente.CreateModel
-
 @{
-    ViewData["Title"] = "Criando novo cliente";
+    ViewData["Title"] = "Novo Cliente";
 }
 
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus"></i> Cadastrar Novo Cliente
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="clienteForm">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-<h4>Cliente</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Cliente.Nome" class="control-label"></label>
-                <input asp-for="Cliente.Nome" class="form-control" />
-                <span asp-validation-for="Cliente.Nome" class="text-danger"></span>
+                        <!-- Dados Pessoais -->
+                        <fieldset class="border rounded p-3 mb-4">
+                            <legend class="w-auto px-2 text-primary">
+                                <i class="fas fa-user"></i> Dados Pessoais
+                            </legend>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Nome" class="form-label fw-bold"></label>
+                                        <input asp-for="Cliente.Nome" class="form-control" placeholder="Digite o nome completo" />
+                                        <span asp-validation-for="Cliente.Nome" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.DataNascimento" class="form-label fw-bold"></label>
+                                        <input asp-for="Cliente.DataNascimento" class="form-control" type="date" />
+                                        <span asp-validation-for="Cliente.DataNascimento" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Email" class="form-label fw-bold"></label>
+                                        <input asp-for="Cliente.Email" class="form-control" type="email" placeholder="exemplo@email.com" />
+                                        <span asp-validation-for="Cliente.Email" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Telefone" class="form-label fw-bold"></label>
+                                        <input asp-for="Cliente.Telefone" class="form-control" placeholder="(00) 00000-0000" />
+                                        <span asp-validation-for="Cliente.Telefone" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Cpf" class="form-label fw-bold"></label>
+                                        <input asp-for="Cliente.Cpf" class="form-control" placeholder="000.000.000-00" />
+                                        <span asp-validation-for="Cliente.Cpf" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Endereço -->
+                        <fieldset class="border rounded p-3 mb-4">
+                            <legend class="w-auto px-2 text-primary">
+                                <i class="fas fa-map-marker-alt"></i> Endereço (Opcional)
+                            </legend>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Endereco" class="form-label"></label>
+                                        <input asp-for="Cliente.Endereco" class="form-control" placeholder="Rua, Avenida, número, complemento" />
+                                        <span asp-validation-for="Cliente.Endereco" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Cep" class="form-label"></label>
+                                        <input asp-for="Cliente.Cep" class="form-control" placeholder="00000-000" />
+                                        <span asp-validation-for="Cliente.Cep" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Cidade" class="form-label"></label>
+                                        <input asp-for="Cliente.Cidade" class="form-control" placeholder="Nome da cidade" />
+                                        <span asp-validation-for="Cliente.Cidade" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label asp-for="Cliente.Estado" class="form-label"></label>
+                                        <select asp-for="Cliente.Estado" class="form-control">
+                                            <option value="">Selecione...</option>
+                                            <option value="AC">AC - Acre</option>
+                                            <option value="AL">AL - Alagoas</option>
+                                            <option value="AP">AP - Amapá</option>
+                                            <option value="AM">AM - Amazonas</option>
+                                            <option value="BA">BA - Bahia</option>
+                                            <option value="CE">CE - Ceará</option>
+                                            <option value="DF">DF - Distrito Federal</option>
+                                            <option value="ES">ES - Espírito Santo</option>
+                                            <option value="GO">GO - Goiás</option>
+                                            <option value="MA">MA - Maranhão</option>
+                                            <option value="MT">MT - Mato Grosso</option>
+                                            <option value="MS">MS - Mato Grosso do Sul</option>
+                                            <option value="MG">MG - Minas Gerais</option>
+                                            <option value="PA">PA - Pará</option>
+                                            <option value="PB">PB - Paraíba</option>
+                                            <option value="PR">PR - Paraná</option>
+                                            <option value="PE">PE - Pernambuco</option>
+                                            <option value="PI">PI - Piauí</option>
+                                            <option value="RJ">RJ - Rio de Janeiro</option>
+                                            <option value="RN">RN - Rio Grande do Norte</option>
+                                            <option value="RS">RS - Rio Grande do Sul</option>
+                                            <option value="RO">RO - Rondônia</option>
+                                            <option value="RR">RR - Roraima</option>
+                                            <option value="SC">SC - Santa Catarina</option>
+                                            <option value="SP">SP - São Paulo</option>
+                                            <option value="SE">SE - Sergipe</option>
+                                            <option value="TO">TO - Tocantins</option>
+                                        </select>
+                                        <span asp-validation-for="Cliente.Estado" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Botões de Ação -->
+                        <div class="d-flex gap-2 justify-content-between">
+                            <a asp-page="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Voltar para Lista
+                            </a>
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save"></i> Salvar Cliente
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Cliente.Email" class="control-label"></label>
-                <input asp-for="Cliente.Email" class="form-control" />
-                <span asp-validation-for="Cliente.Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Máscara para CPF
+        document.getElementById('Cliente_Cpf').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            value = value.replace(/(\d{3})(\d{1,2})/, '$1-$2');
+            value = value.replace(/(-\d{2})\d+?$/, '$1');
+            e.target.value = value;
+        });
+
+        // Máscara para CEP
+        document.getElementById('Cliente_Cep').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+        });
+
+        // Máscara para Telefone
+        document.getElementById('Cliente_Telefone').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = value.replace(/(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            e.target.value = value;
+        });
+
+        // Validação de idade em tempo real
+        document.getElementById('Cliente_DataNascimento').addEventListener('change', function (e) {
+            const hoje = new Date();
+            const nascimento = new Date(e.target.value);
+            const idade = hoje.getFullYear() - nascimento.getFullYear();
+
+            if (idade < 18 || (idade === 18 && hoje < new Date(nascimento.setFullYear(nascimento.getFullYear() + 18)))) {
+                alert('O cliente deve ter pelo menos 18 anos.');
+            }
+        });
+
+        // Buscar CEP automaticamente
+        document.getElementById('Cliente_Cep').addEventListener('blur', function (e) {
+            const cep = e.target.value.replace(/\D/g, '');
+            if (cep.length === 8) {
+                fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.erro) {
+                            document.getElementById('Cliente_Endereco').value = data.logradouro || '';
+                            document.getElementById('Cliente_Cidade').value = data.localidade || '';
+                            document.getElementById('Cliente_Estado').value = data.uf || '';
+                        }
+                    })
+                    .catch(error => console.log('Erro ao buscar CEP:', error));
+            }
+        });
+    </script>
 }

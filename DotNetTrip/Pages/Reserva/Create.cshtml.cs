@@ -139,7 +139,6 @@ namespace DotNetTrip.Pages.Reserva
             Console.WriteLine("=====================================");
         }
 
-        // Nota: PageModel não implementa IDisposable, então não é necessário
-        // desregistrar o evento. O evento estático será limpo quando a aplicação terminar.
+        
     }
 }

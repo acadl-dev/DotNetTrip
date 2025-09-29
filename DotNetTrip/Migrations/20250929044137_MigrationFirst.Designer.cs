@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotNetTrip.Migrations
 {
     [DbContext(typeof(DotNetTripDbContext))]
-    [Migration("20250929031347_RenovanndoaMigration")]
-    partial class RenovanndoaMigration
+    [Migration("20250929044137_MigrationFirst")]
+    partial class MigrationFirst
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,14 +34,47 @@ namespace DotNetTrip.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Cep")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Cidade")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Cpf")
+                        .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<DateTime>("DataCadastro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataNascimento")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Endereco")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Estado")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -62,17 +95,12 @@ namespace DotNetTrip.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("PacoteTuristicoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Pais")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PacoteTuristicoId");
 
                     b.ToTable("Destino");
                 });
@@ -118,6 +146,10 @@ namespace DotNetTrip.Migrations
 
                     b.Property<DateTime>("DataReserva")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Observacoes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PacoteTuristicoId")
                         .HasColumnType("int");
@@ -333,11 +365,19 @@ namespace DotNetTrip.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("DotNetTrip.Models.Destino", b =>
+            modelBuilder.Entity("PacoteTuristicoDestino", b =>
                 {
-                    b.HasOne("DotNetTrip.Models.PacoteTuristico", null)
-                        .WithMany("Destinos")
-                        .HasForeignKey("PacoteTuristicoId");
+                    b.Property<int>("DestinoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PacoteTuristicoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DestinoId", "PacoteTuristicoId");
+
+                    b.HasIndex("PacoteTuristicoId");
+
+                    b.ToTable("PacoteTuristicoDestino", (string)null);
                 });
 
             modelBuilder.Entity("DotNetTrip.Models.Reserva", b =>
@@ -410,6 +450,21 @@ namespace DotNetTrip.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PacoteTuristicoDestino", b =>
+                {
+                    b.HasOne("DotNetTrip.Models.Destino", null)
+                        .WithMany()
+                        .HasForeignKey("DestinoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DotNetTrip.Models.PacoteTuristico", null)
+                        .WithMany()
+                        .HasForeignKey("PacoteTuristicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("DotNetTrip.Models.Cliente", b =>
                 {
                     b.Navigation("Reservas");
@@ -417,8 +472,6 @@ namespace DotNetTrip.Migrations
 
             modelBuilder.Entity("DotNetTrip.Models.PacoteTuristico", b =>
                 {
-                    b.Navigation("Destinos");
-
                     b.Navigation("ReservasFeitas");
                 });
 #pragma warning restore 612, 618
