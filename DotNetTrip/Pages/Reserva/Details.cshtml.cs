@@ -28,15 +28,18 @@ namespace DotNetTrip.Pages.Reserva
                 return NotFound();
             }
 
-            var reserva = await _context.Reserva.FirstOrDefaultAsync(m => m.Id == id);
+
+            var reserva = await _context.Reserva
+                .Include(r => r.Cliente)
+                .Include(r => r.PacoteTuristico)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (reserva == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Reserva = reserva;
-            }
+
+            Reserva = reserva;
             return Page();
         }
     }

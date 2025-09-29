@@ -9,6 +9,7 @@
         public decimal Preco { get; set; }
         public List<Destino>? Destinos { get; set; }
 
-        public List<Reserva>? Reservas { get; set; }
+        // Relacionamento automático
+        public virtual ICollection<Reserva> ReservasFeitas { get; set; } = new List<Reserva>();
     }
 }

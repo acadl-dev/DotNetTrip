@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DotNetTrip.Data.Migrations
+namespace DotNetTrip.Migrations
 {
     [DbContext(typeof(DotNetTripDbContext))]
-    [Migration("20250928222052_SecondMigration")]
-    partial class SecondMigration
+    [Migration("20250929031347_RenovanndoaMigration")]
+    partial class RenovanndoaMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,29 +116,19 @@ namespace DotNetTrip.Data.Migrations
                     b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ClienteId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DataReserva")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("PacoteTuristicoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PacoteTuristicoId1")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClienteId");
 
-                    b.HasIndex("ClienteId1");
-
                     b.HasIndex("PacoteTuristicoId");
 
-                    b.HasIndex("PacoteTuristicoId1");
-
-                    b.ToTable("Reserva");
+                    b.ToTable("Reserva", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -353,24 +343,16 @@ namespace DotNetTrip.Data.Migrations
             modelBuilder.Entity("DotNetTrip.Models.Reserva", b =>
                 {
                     b.HasOne("DotNetTrip.Models.Cliente", "Cliente")
-                        .WithMany()
+                        .WithMany("Reservas")
                         .HasForeignKey("ClienteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DotNetTrip.Models.Cliente", null)
-                        .WithMany("Reservas")
-                        .HasForeignKey("ClienteId1");
-
                     b.HasOne("DotNetTrip.Models.PacoteTuristico", "PacoteTuristico")
-                        .WithMany()
+                        .WithMany("ReservasFeitas")
                         .HasForeignKey("PacoteTuristicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("DotNetTrip.Models.PacoteTuristico", null)
-                        .WithMany("Reservas")
-                        .HasForeignKey("PacoteTuristicoId1");
 
                     b.Navigation("Cliente");
 
@@ -437,7 +419,7 @@ namespace DotNetTrip.Data.Migrations
                 {
                     b.Navigation("Destinos");
 
-                    b.Navigation("Reservas");
+                    b.Navigation("ReservasFeitas");
                 });
 #pragma warning restore 612, 618
         }

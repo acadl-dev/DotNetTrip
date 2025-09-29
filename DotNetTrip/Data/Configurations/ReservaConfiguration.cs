@@ -1,22 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DotNetTrip.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DotNetTrip.Models;
 
-namespace DotNetTrip.Data.Configurations
+public class ReservaConfiguration : IEntityTypeConfiguration<Reserva>
 {
-    public class ReservaConfiguration : IEntityTypeConfiguration<Reserva>
+    public void Configure(EntityTypeBuilder<Reserva> builder)
     {
-        public void Configure(EntityTypeBuilder<Reserva> builder)
-        {
-            builder.HasOne(r => r.Cliente)
-                .WithMany()
-                .HasForeignKey(r => r.ClienteId)
-                .IsRequired(true);
+        builder.ToTable("Reserva");
+        builder.HasKey(r => r.Id);
 
-            builder.HasOne(r => r.PacoteTuristico)
-                .WithMany()
-                .HasForeignKey(r => r.PacoteTuristicoId)
-                .IsRequired(true);
-        }
+        // Apenas propriedades básicas, SEM relacionamentos
+        builder.Property(r => r.ClienteId).IsRequired();
+        builder.Property(r => r.PacoteTuristicoId).IsRequired();
+        builder.Property(r => r.DataReserva).IsRequired();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -12,31 +11,39 @@ namespace DotNetTrip.Pages.PacoteTuristico
 {
     public class DetailsModel : PageModel
     {
-        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
+        private readonly DotNetTripDbContext _context;
 
-        public DetailsModel(DotNetTrip.Data.DotNetTripDbContext context)
+        public DetailsModel(DotNetTripDbContext context)
         {
             _context = context;
         }
 
-        public DotNetTrip.Models.PacoteTuristico PacoteTuristico { get; set; } = default!;
+        // Altere o nome da propriedade para evitar conflito com o namespace
+        public Models.PacoteTuristico PacoteTuristico { get; set; } = default!;
+        public int QuantidadeReservas { get; set; }
+        public decimal ValorTotalReservas { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
-            var pacoteturistico = await _context.PacoteTuristico.FirstOrDefaultAsync(m => m.Id == id);
-            if (pacoteturistico == null)
-            {
+            // Inclui as reservas
+            var pacote = await _context.PacoteTuristico
+                .Include(p => p.ReservasFeitas)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pacote == null)
                 return NotFound();
-            }
-            else
-            {
-                PacoteTuristico = pacoteturistico;
-            }
+
+            PacoteTuristico = pacote;
+
+            // Func para calcular valor total
+            Func<int, decimal, decimal> calcularTotal = (qtd, preco) => qtd * preco;
+
+            QuantidadeReservas = pacote.ReservasFeitas?.Count ?? 0;
+            ValorTotalReservas = calcularTotal(QuantidadeReservas, pacote.Preco);
+
             return Page();
         }
     }
