@@ -12,9 +12,9 @@ namespace DotNetTrip.Pages.Cliente
 {
     public class DeleteModel : PageModel
     {
-        private readonly DotNetTrip.Data.DotNetTripDbContext _context;
+        private readonly DotNetTripDbContext _context;
 
-        public DeleteModel(DotNetTrip.Data.DotNetTripDbContext context)
+        public DeleteModel(DotNetTripDbContext context)
         {
             _context = context;
         }
@@ -49,13 +49,38 @@ namespace DotNetTrip.Pages.Cliente
                 return NotFound();
             }
 
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente != null)
+            // ===== BUSCAR O CLIENTE (pode usar FindAsync ou FirstOrDefaultAsync) =====
+            var cliente = await _context.Clientes
+                .IgnoreQueryFilters() // Permite buscar mesmo que já esteja excluído
+                .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (cliente == null)
             {
-                Cliente = cliente;
-                _context.Clientes.Remove(Cliente);
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
+
+            // Verificar se já está excluído
+            if (cliente.IsDeleted)
+            {
+                TempData["ErrorMessage"] = $"O cliente '{cliente.Nome}' já foi excluído anteriormente.";
+                return RedirectToPage("./Index");
+            }
+
+            // ===== EXCLUSÃO LÓGICA: Marcar como excluído em vez de remover =====
+            cliente.IsDeleted = true;
+            cliente.DeletedAt = DateTime.Now;
+
+            _context.Clientes.Update(cliente);
+            await _context.SaveChangesAsync();
+
+            // Log da exclusão lógica
+            Console.WriteLine($"[{DateTime.Now:dd/MM/yyyy HH:mm:ss}] - EXCLUSÃO LÓGICA: Cliente '{cliente.Nome}' (ID: {cliente.Id}, CPF: {cliente.Cpf}) marcado como excluído. DeletedAt: {cliente.DeletedAt:dd/MM/yyyy HH:mm:ss}");
+
+            TempData["SuccessMessage"] = $"Cliente '{cliente.Nome}' excluído com sucesso (exclusão lógica).";
+
+            // ===== CÓDIGO ANTIGO (EXCLUSÃO FÍSICA) - COMENTADO =====
+            // _context.Clientes.Remove(cliente);
+            // await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
         }

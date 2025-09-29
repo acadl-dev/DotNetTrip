@@ -60,6 +60,12 @@ namespace DotNetTrip.Models
         // Data de cadastro automática
         [Display(Name = "Data de Cadastro")]
         public DateTime DataCadastro { get; set; } = DateTime.Now;
+
+        [Display(Name = "Excluído")]
+        public bool IsDeleted { get; set; } = false;
+
+        [Display(Name = "Data de Exclusão")]
+        public DateTime? DeletedAt { get; set; }
         public List<Reserva>? Reservas { get; set; }
     }
 }

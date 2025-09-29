@@ -10,7 +10,11 @@ namespace DotNetTrip.Data.Configurations
         {
             builder.Property(e => e.Id).HasColumnName("id_cliente");
             builder.Property(e => e.Nome).HasMaxLength(50);
-           
+
+            // ===== Adicionar filtro global para exclusão lógica =====
+            // Isso faz com que clientes excluídos não apareçam em queries normais
+            builder.HasQueryFilter(c => !c.IsDeleted);
+
 
         }
 

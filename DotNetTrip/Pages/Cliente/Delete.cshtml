@@ -2,12 +2,22 @@
 @model DotNetTrip.Pages.Cliente.DeleteModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Excluir Cliente";
 }
 
-<h1>Delete</h1>
+<h1>Excluir Cliente</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<!-- Alerta informando sobre exclusão lógica -->
+<div class="alert alert-warning">
+    <h5>⚠️ Atenção: Exclusão Lógica</h5>
+    <p class="mb-0">
+        Este cliente será marcado como <strong>excluído</strong>, mas seus dados permanecerão
+        no banco de dados para preservar o histórico de reservas e auditoria.
+    </p>
+</div>
+
+<h3>Tem certeza que deseja excluir este cliente?</h3>
+
 <div>
     <h4>Cliente</h4>
     <hr />
@@ -24,11 +34,29 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Cliente.Email)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Cpf)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Cpf)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.Telefone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.Telefone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Cliente.DataCadastro)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Cliente.DataCadastro)
+        </dd>
     </dl>
-    
+
     <form method="post">
         <input type="hidden" asp-for="Cliente.Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
+        <input type="submit" value="Confirmar Exclusão" class="btn btn-danger" /> |
+        <a asp-page="./Index" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
